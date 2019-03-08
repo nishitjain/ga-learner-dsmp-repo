@@ -1,4 +1,3 @@
-# --------------
 import pandas as pd
 from sklearn import preprocessing
 
@@ -82,57 +81,6 @@ import numpy as np
 
 # Identify the unnecessary columns and remove it 
 dataset.drop(columns=['Soil_Type7', 'Soil_Type15'], inplace=True)
-X = dataset.drop('Cover_Type',1)
-y = dataset['Cover_Type']
-X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=0)
-scaler = StandardScaler()
-X_train_temp = X_train.select_dtypes(include=np.number)
-X_test_temp = X_test.select_dtypes(include=np.number)
-X_train_temp_cols = X_train_temp.columns
-X_train_cat = X_train.select_dtypes(exclude=np.number)
-X_test_cat = X_test.select_dtypes(exclude=np.number)
-X_train_temp = scaler.fit_transform(X_train_temp)
-X_test_temp = scaler.transform(X_test_temp)
-X_train1 = pd.concat([pd.DataFrame(X_train_temp,columns=X_train_temp_cols),X_train_cat],axis=1)
-X_test1 = pd.concat([pd.DataFrame(X_test_temp,columns=X_train_temp_cols),X_test_cat],axis=1)
-scaled_features_train_df = X_train1
-scaled_features_test_df = X_test1
-# Scales are not the same for all variables. Hence, rescaling and standardization may be necessary for some algorithm to be applied on it.
-
-
-
-#Standardized
-#Apply transform only for non-categorical data
-
-
-#Concatenate non-categorical data and categorical
-
-
-
-# --------------
-from sklearn.feature_selection import SelectPercentile
-from sklearn.feature_selection import f_classif
-
-
-# Write your solution here:
-skb = SelectPercentile(score_func=f_classif,percentile=20)
-predictors = skb.fit(X_train_temp,y_train)
-scores = -np.log10(predictors.pvalues_)
-top_k_index = predictors.get_support(indices=True)
-top_k_predictors = []
-for index in top_k_index:
-    top_k_predictors.append(list(X_train1.columns)[index])
-print(top_k_index)
-print(top_k_predictors)
-
-
-# --------------
-#Import libraries 
-from sklearn import cross_validation
-from sklearn.preprocessing import StandardScaler
-
-# Identify the unnecessary columns and remove it 
-#dataset.drop(columns=['Soil_Type7', 'Soil_Type15'], inplace=True)
 
 r,c = dataset.shape
 X = dataset.iloc[:,:-1]
